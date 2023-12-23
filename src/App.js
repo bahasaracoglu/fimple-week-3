@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import ProductList from "./components/ProductList";
+import CustomModal from "./components/Modal";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showModal: false,
+      editingProduct: null,
+      products: [],
+    };
+  }
+
+  handleEdit = (product) => {
+    this.setState({ showModal: true, editingProduct: product });
+  };
+
+  handleModalClose = () => {
+    this.setState({ showModal: false, editingProduct: null });
+  };
+
+  handleSaveEdit = (editedProduct) => {
+    // Implement save edit logic and show notification
+    console.log("Product edited:", editedProduct);
+    this.handleModalClose();
+  };
+
+  render() {
+    const { showModal, editingProduct } = this.state;
+
+    return (
+      <div>
+        <ProductList onEdit={this.handleEdit} />
+        <CustomModal
+          product={editingProduct}
+          isOpen={showModal}
+          onClose={this.handleModalClose}
+          onSave={this.handleSaveEdit}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
